@@ -16,7 +16,7 @@ func main() {
 func getReadings(ch chan<- string) {
 	// generate readings
 	start := time.Now()
-  rand.Seed(start.UTC().UnixNano())
+	rand.Seed(start.UTC().UnixNano())
 
 	r_temperature := rand.Float64()
 	r_humidity := rand.Float64()
