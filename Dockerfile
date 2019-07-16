@@ -1,8 +1,16 @@
-FROM golang:1.8
+# Builder of binaries
+FROM golang:1.8 AS builder
 
 RUN mkdir -p /go-simulated-wsn
 WORKDIR /go-simulated-wsn
 
-ADD . /go-simulated-wsn
+COPY src/ /go-simulated-wsn/
 
-RUN go run /go-simulated-wsn/src/sensor.go
+RUN go build /go-simulated-wsn/sensor.go
+
+# Light release
+FROM alpine AS release
+
+COPY --from=builder /go-simulated-wsn/sensor /
+
+CMD ["/sensor"]
