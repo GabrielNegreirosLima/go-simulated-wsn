@@ -1,24 +1,27 @@
 package main
 
 import (
-  "fmt"
-  "math/rand"
-  "time"
+	"fmt"
+	"math/rand"
+	"time"
 )
 
 func main() {
-  ch := make(chan string)
+	ch := make(chan string)
 
-  go getReadings(ch);
+	go getReadings(ch)
+	fmt.Println(<-ch)
 }
 
 func getReadings(ch chan<- string) {
-  // generate readings
-  start := time.Now()
+	// generate readings
+	start := time.Now()
 
-  r_temperature := rand.Float64()
-  r_humidity := rand.Float64()
-  r_luminosity := rand.Float64()
+	r_temperature := rand.Float64()
+	r_humidity := rand.Float64()
+	r_luminosity := rand.Float64()
 
-  ch <- fmt.Sprint("%.2fs:\n\ttemperature: %f\n\thumidity: %f\n\tluminosity: %f", start, r_temperature, r_humidity, r_luminosity)
+	secs := time.Since(start).Seconds()
+
+	ch <- fmt.Sprintf("%.12fs \n\t temperature: %v\n\t humidity: %v \n\t luminosity: %v", secs, r_temperature, r_humidity, r_luminosity)
 }
